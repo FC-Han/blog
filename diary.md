@@ -7,4 +7,6 @@ title: 日记
 
 记录日常的点滴、随手的感想，以及那些不想被时间冲走的小事。
 
-<PostList tag="日记" />
+这里按月归档，新的在上面。
+
+<PostList tag="日记" mode="archive" />

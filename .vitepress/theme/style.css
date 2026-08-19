@@ -97,3 +97,186 @@
   color: var(--vp-c-text-2);
   font-size: 0.85rem;
 }
+
+/* ============ 暖橙主题 ============ */
+:root {
+  --vp-c-brand-1: #e8590c;
+  --vp-c-brand-2: #f76707;
+  --vp-c-brand-3: #fd7e14;
+  --vp-c-brand-soft: rgba(232, 89, 12, 0.16);
+  --vp-c-brand-soft-bg: rgba(232, 89, 12, 0.10);
+  --warm-1: #e8590c;
+  --warm-2: #fd7e14;
+  --warm-3: #ffa94d;
+}
+.dark {
+  --vp-c-brand-1: #ff922b;
+  --vp-c-brand-2: #fd7e14;
+  --vp-c-brand-3: #f76707;
+  --vp-c-brand-soft: rgba(255, 146, 43, 0.18);
+  --warm-1: #ff922b;
+  --warm-2: #fd7e14;
+  --warm-3: #ffa94d;
+}
+
+/* 首页 hero 头像背后的暖色光晕 */
+.VPHero .image-bg {
+  background: radial-gradient(
+    250px 250px at 50% 45%,
+    rgba(253, 126, 20, 0.28),
+    rgba(232, 89, 12, 0.06) 70%,
+    transparent 100%
+  ) !important;
+  filter: blur(36px) !important;
+}
+.VPHero .image-container img {
+  border-radius: 50%;
+  border: 3px solid var(--vp-c-brand-soft);
+  box-shadow: 0 8px 30px rgba(232, 89, 12, 0.25);
+}
+.VPHero .text .tagline {
+  color: var(--vp-c-text-2);
+}
+
+/* ============ 高级日记（按月归档） ============ */
+.diary-archive {
+  margin-top: 1.5rem;
+  position: relative;
+}
+.diary-month {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-top: 1.6rem;
+  border-left: 2px solid var(--vp-c-brand-soft);
+}
+.diary-month-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.diary-month-dot {
+  position: absolute;
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--warm-2);
+  box-shadow: 0 0 0 4px var(--vp-c-brand-soft-bg);
+}
+.diary-month-label {
+  font-size: 1.15rem;
+  margin: 0;
+  color: var(--vp-c-text-1);
+}
+.diary-month-count {
+  font-size: 0.8rem;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-brand-soft-bg);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+}
+.diary-month-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.diary-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--vp-c-divider);
+}
+.diary-entry:last-child {
+  border-bottom: none;
+}
+.diary-day {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--warm-1);
+  min-width: 2.2rem;
+  font-size: 0.95rem;
+}
+.diary-title {
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+  font-size: 1rem;
+}
+.diary-title:hover {
+  color: var(--vp-c-brand-1);
+}
+
+/* ============ 关于页（资料卡） ============ */
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.profile-card {
+  text-align: center;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(160deg, var(--vp-c-brand-soft-bg), transparent 70%);
+}
+.profile-avatar {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 8px 28px rgba(232, 89, 12, 0.25);
+}
+.profile-name {
+  margin: 0.9rem 0 0.3rem;
+  font-size: 1.8rem;
+}
+.profile-bio {
+  color: var(--vp-c-text-2);
+  margin: 0 auto;
+  max-width: 32rem;
+  line-height: 1.7;
+}
+.profile-tags {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.profile-tags span {
+  font-size: 0.82rem;
+  color: var(--warm-1);
+  background: var(--vp-c-brand-soft-bg);
+  border-radius: 999px;
+  padding: 0.2rem 0.8rem;
+}
+.profile-contact {
+  margin-top: 1.2rem;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+}
+.profile-contact a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  font-weight: 500;
+}
+.profile-contact a:hover {
+  text-decoration: underline;
+}
+.profile-section h2 {
+  font-size: 1.25rem;
+  border-left: 4px solid var(--warm-2);
+  padding-left: 0.6rem;
+}
+.profile-section blockquote {
+  margin: 0;
+  padding: 0.8rem 1.2rem;
+  border-left: 4px solid var(--warm-2);
+  background: var(--vp-c-brand-soft-bg);
+  border-radius: 0 8px 8px 0;
+  color: var(--vp-c-text-1);
+  font-style: italic;
+}
