@@ -12,11 +12,13 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
+      { text: '文章', link: '/posts/welcome' },
       { text: '标签', link: '/tags' },
+      { text: '日记', link: '/diary' },
       { text: '关于', link: '/about' }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com' }
+      { icon: 'github', link: 'https://github.com/FC-Han' }
     ],
     docFooter: {
       prev: '上一篇',

@@ -65,6 +65,17 @@
   color: var(--vp-c-text-2);
   font-size: 0.95rem;
 }
+.post-empty {
+  color: var(--vp-c-text-2);
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+/* 首页「随便逛逛」链接区 */
+.home-links {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
 
 /* 标签页 */
 .tag-section {

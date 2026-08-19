@@ -3,3 +3,8 @@ node_modules
 .vitepress/cache
 .vitepress/.temp
 .DS_Store
+
+# 本地构建/调试临时文件
+_build.log
+_clean.cjs
+_clean.js
