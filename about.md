@@ -5,9 +5,10 @@ title: 关于
 
 <div class="profile">
   <div class="profile-card">
+    <div class="profile-card-top"></div>
     <img class="profile-avatar" src="/tx.jpg" alt="头像" />
     <h1 class="profile-name">成</h1>
-    <p class="profile-bio">这里是「成的小屋」的主理人。写代码，也写生活；相信休息也是工作的一部分。</p>
+    <p class="profile-bio">「成的小屋」的主理人。写代码，也写生活；相信休息也是工作的一部分。</p>
     <div class="profile-tags">
       <span>前端</span>
       <span>VitePress</span>
@@ -21,6 +22,8 @@ title: 关于
     </div>
   </div>
 
+  <SiteStats />
+
   <div class="profile-section">
     <h2>🙋 关于我</h2>
     <p>你好，我是成。平时喜欢折腾各种小工具，把生活里零碎的想法写成文字留下来。这个博客就是我的一个小角落——技术笔记和生活碎片都在这里。</p>
@@ -32,6 +35,14 @@ title: 关于
       <li>基于 <strong>VitePress</strong> 构建，原生支持 Markdown 与代码高亮。</li>
       <li>部署在 <strong>GitHub Pages</strong>，源码与构建产物分离（main / gh-pages）。</li>
       <li>文章、标签、日记一应俱全，写新内容只需丢一个 <code>.md</code> 文件。</li>
+    </ul>
+  </div>
+
+  <div class="profile-section">
+    <h2>🚀 最近在做</h2>
+    <ul>
+      <li>把博客打磨得更顺手，慢慢沉淀技术笔记。</li>
+      <li>坚持写日记，给生活留点痕迹。</li>
     </ul>
   </div>
 

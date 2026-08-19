@@ -9,6 +9,8 @@ export default defineConfig({
   // 项目站点（github.com/FC-Han/blog → FC-Han.github.io/blog）必须设置 base
   base: '/blog/',
   lastUpdated: true,
+  // README 是给 GitHub 仓库看的说明，不参与站点构建
+  srcExclude: ['README.md'],
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },

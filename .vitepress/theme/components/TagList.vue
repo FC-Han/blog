@@ -1,82 +1,74 @@
 <script setup>
 import { computed } from 'vue'
+import { loadPosts } from '../utils/posts'
 
-// 汇总所有文章的 tags，按标签下文章数量排序，生成标签分类页。
-// 用 ?raw 读原文 + 自建极简 frontmatter 解析（VitePress 1.x 不导出 frontmatter 命名导出）。
-const modules = import.meta.glob('../../../posts/*.md', {
-  eager: true,
-  query: '?raw',
-  import: 'default'
-})
-
-function parseFrontmatter(raw) {
-  const m = raw && raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-  if (!m) return {}
-  const fm = {}
-  const lines = m[1].split(/\r?\n/)
-  let i = 0
-  while (i < lines.length) {
-    const kv = lines[i].match(/^([A-Za-z\u4e00-\u9fa5_-]+):\s*(.*)$/)
-    if (!kv) { i++; continue }
-    const key = kv[1]
-    const val = kv[2].trim()
-    if (val === '') {
-      const arr = []
-      let j = i + 1
-      while (j < lines.length && /^\s*-\s+/.test(lines[j])) {
-        arr.push(lines[j].replace(/^\s*-\s+/, '').trim())
-        j++
-      }
-      fm[key] = arr.length ? arr : ''
-      i = j
-      continue
-    }
-    const arrMatch = val.match(/^\[(.*)\]$/)
-    if (arrMatch) {
-      fm[key] = arrMatch[1].split(',').map((s) => s.trim()).filter(Boolean)
-    } else {
-      fm[key] = val.replace(/^["']|["']$/g, '')
-    }
-    i++
-  }
-  return fm
-}
+// 汇总所有文章的 tags，按标签下文章数量排序，生成标签云 + 分类卡片。
+const all = loadPosts()
 
 const tags = computed(() => {
   const map = {}
-  for (const [path, raw] of Object.entries(modules)) {
-    const fm = parseFrontmatter(raw)
-    const slug = path.split('/').pop().replace(/\.md$/, '')
-    const list = Array.isArray(fm.tags) ? fm.tags : []
-    const post = {
-      title: fm.title || slug,
-      date: fm.date || '',
-      url: '/posts/' + slug
-    }
-    for (const t of list) {
+  for (const p of all) {
+    for (const t of p.tags) {
       if (!map[t]) map[t] = []
-      map[t].push(post)
+      map[t].push(p)
     }
   }
   return Object.entries(map)
     .map(([name, posts]) => ({
       name,
+      count: posts.length,
       posts: posts.sort((a, b) => (a.date < b.date ? 1 : -1))
     }))
-    .sort((a, b) => b.posts.length - a.posts.length)
+    .sort((a, b) => b.count - a.count)
 })
+
+// 标签云字号：数量越多越大
+function cloudClass(count) {
+  if (count >= 3) return 'cloud-lg'
+  if (count === 2) return 'cloud-md'
+  return 'cloud-sm'
+}
+
+function scrollToTag(name) {
+  const el = document.getElementById('tag-' + name)
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 </script>
 
 <template>
-  <div class="tag-list">
-    <section v-for="tag in tags" :key="tag.name" :id="tag.name" class="tag-section">
-      <h2 class="tag-title"># {{ tag.name }} <span class="tag-count">({{ tag.posts.length }})</span></h2>
-      <ul>
-        <li v-for="p in tag.posts" :key="p.url">
-          <a :href="p.url">{{ p.title }}</a>
-          <span v-if="p.date" class="tag-date">{{ p.date }}</span>
-        </li>
-      </ul>
-    </section>
+  <div class="tag-page">
+    <!-- 标签云 -->
+    <div v-if="tags.length" class="tag-cloud">
+      <a
+        v-for="t in tags"
+        :key="t.name"
+        class="cloud-chip"
+        :class="cloudClass(t.count)"
+        @click.prevent="scrollToTag(t.name)"
+        :title="`${t.count} 篇`"
+      ># {{ t.name }}</a>
+    </div>
+    <p v-else class="post-empty">还没有标签，写第一篇文章时记得加上哦～</p>
+
+    <!-- 分类卡片 -->
+    <div class="tag-sections">
+      <section
+        v-for="t in tags"
+        :key="t.name"
+        :id="'tag-' + t.name"
+        class="tag-section"
+      >
+        <div class="tag-section-head">
+          <h2 class="tag-title"># {{ t.name }}</h2>
+          <span class="tag-count">{{ t.count }} 篇</span>
+        </div>
+        <ul class="tag-post-list">
+          <li v-for="p in t.posts" :key="p.url">
+            <a :href="p.url" class="tag-post-link">{{ p.title }}</a>
+            <span v-if="p.date" class="tag-date">{{ p.date }}</span>
+          </li>
+        </ul>
+      </section>
+    </div>
   </div>
 </template>

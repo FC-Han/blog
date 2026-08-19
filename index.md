@@ -4,7 +4,7 @@ layout: home
 hero:
   name: 成的小屋
   text: 休息也是工作的一部分
-  tagline: 一个用 VitePress 搭建的小角落 · 写代码，也写生活
+  tagline: 记录 & 专注
   image:
     src: /tx.jpg
     alt: 头像
@@ -37,4 +37,9 @@ features:
 
 ## 🧭 随便逛逛
 
-- [📝 全部文章](/posts) · [🏷️ 标签分类](/tags) · [📔 我的日记](/diary) · [👤 关于我](/about)
+<div class="home-links">
+  <a href="/posts">📝 全部文章</a>
+  <a href="/tags">🏷️ 标签分类</a>
+  <a href="/diary">📔 我的日记</a>
+  <a href="/about">👤 关于我</a>
+</div>

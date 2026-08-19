@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { loadPosts } from '../utils/posts'
 
 // 文章列表组件，支持三种用法：
 //   <PostList />                      全部文章
@@ -7,7 +8,6 @@ import { computed } from 'vue'
 //   <PostList exclude-tag="日记" />   排除某标签（首页/文章页用，把日记分出去）
 //   <PostList :limit="5" />           限制条数
 //   <PostList tag="日记" mode="archive" />  按月归档（高级日记页）
-// VitePress 1.x 不给 markdown 导出 frontmatter，这里用 ?raw 读原文并自建极简解析。
 const props = defineProps({
   tag: { type: String, default: '' },
   excludeTag: { type: String, default: '' },
@@ -15,64 +15,14 @@ const props = defineProps({
   mode: { type: String, default: 'list' } // 'list' | 'archive'
 })
 
-const modules = import.meta.glob('../../../posts/*.md', {
-  eager: true,
-  query: '?raw',
-  import: 'default'
-})
-
-function parseFrontmatter(raw) {
-  const m = raw && raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-  if (!m) return {}
-  const fm = {}
-  const lines = m[1].split(/\r?\n/)
-  let i = 0
-  while (i < lines.length) {
-    const kv = lines[i].match(/^([A-Za-z\u4e00-\u9fa5_-]+):\s*(.*)$/)
-    if (!kv) { i++; continue }
-    const key = kv[1]
-    const val = kv[2].trim()
-    if (val === '') {
-      const arr = []
-      let j = i + 1
-      while (j < lines.length && /^\s*-\s+/.test(lines[j])) {
-        arr.push(lines[j].replace(/^\s*-\s+/, '').trim())
-        j++
-      }
-      fm[key] = arr.length ? arr : ''
-      i = j
-      continue
-    }
-    const arrMatch = val.match(/^\[(.*)\]$/)
-    if (arrMatch) {
-      fm[key] = arrMatch[1].split(',').map((s) => s.trim()).filter(Boolean)
-    } else {
-      fm[key] = val.replace(/^["']|["']$/g, '')
-    }
-    i++
-  }
-  return fm
-}
+const all = loadPosts()
 
 const filtered = computed(() => {
-  let list = Object.entries(modules)
-    .map(([path, raw]) => {
-      const fm = parseFrontmatter(raw)
-      const slug = path.split('/').pop().replace(/\.md$/, '')
-      return {
-        title: fm.title || slug,
-        date: fm.date || '',
-        tags: Array.isArray(fm.tags) ? fm.tags : [],
-        description: fm.description || '',
-        url: '/posts/' + slug
-      }
-    })
-    .filter(
-      (p) =>
-        (!props.tag || p.tags.includes(props.tag)) &&
-        (!props.excludeTag || !p.tags.includes(props.excludeTag))
-    )
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
+  let list = all.filter(
+    (p) =>
+      (!props.tag || p.tags.includes(props.tag)) &&
+      (!props.excludeTag || !p.tags.includes(props.excludeTag))
+  )
   if (props.limit) list = list.slice(0, props.limit)
   return list
 })
@@ -100,12 +50,17 @@ const grouped = computed(() => {
   <div v-if="mode !== 'archive'" class="post-list">
     <p v-if="!filtered.length" class="post-empty">这里还没有内容，敬请期待～</p>
     <article v-for="post in filtered" :key="post.url" class="post-card">
-      <a :href="post.url" class="post-title">{{ post.title }}</a>
-      <div class="post-meta">
-        <span v-if="post.date" class="post-date">{{ post.date }}</span>
-        <span v-for="t in post.tags" :key="t" class="post-tag">#{{ t }}</span>
-      </div>
-      <p v-if="post.description" class="post-desc">{{ post.description }}</p>
+      <a :href="post.url" class="post-card-main">
+        <div class="post-meta">
+          <span v-if="post.date" class="post-date">
+            <span class="post-date-icon">📅</span>{{ post.date }}
+          </span>
+          <span v-for="t in post.tags" :key="t" class="post-tag">#{{ t }}</span>
+        </div>
+        <h3 class="post-title">{{ post.title }}</h3>
+        <p v-if="post.description" class="post-desc">{{ post.description }}</p>
+      </a>
+      <a :href="post.url" class="post-arrow" aria-label="阅读文章">→</a>
     </article>
   </div>
 
@@ -122,6 +77,7 @@ const grouped = computed(() => {
         <li v-for="post in group.posts" :key="post.url" class="diary-entry">
           <span class="diary-day">{{ (post.date || '').slice(8, 10) || '--' }}</span>
           <a :href="post.url" class="diary-title">{{ post.title }}</a>
+          <span v-if="post.description" class="diary-desc">{{ post.description }}</span>
         </li>
       </ul>
     </section>
