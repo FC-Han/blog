@@ -8,3 +8,8 @@ node_modules
 _build.log
 _clean.cjs
 _clean.js
+
+# 本地临时日志
+_dev.log
+_build.log
+*.log
