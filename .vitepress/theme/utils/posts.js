@@ -51,7 +51,10 @@ export function loadPosts() {
         date: fm.date || '',
         tags: Array.isArray(fm.tags) ? fm.tags : [],
         description: fm.description || '',
-        url: '/posts/' + slug,
+        // 注意：必须带 base 前缀（/blog/）。VitePress 只会自动处理 markdown
+        // 里的链接；自定义组件里的 href 要自己拼 BASE_URL，否则点击文章卡片
+        // 会跳到根目录的 /posts/xxx（不存在）→ 404「没有内容」。
+        url: import.meta.env.BASE_URL + 'posts/' + slug,
         wordCount: content.replace(/\s/g, '').length
       }
     })
