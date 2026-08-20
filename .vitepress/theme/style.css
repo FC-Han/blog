@@ -243,73 +243,29 @@
 .cloud-md { font-size: 1rem; }
 .cloud-sm { font-size: 0.88rem; }
 
-.tag-sections {
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+/* 选中态 */
+.cloud-chip.active {
+  background: var(--warm-grad);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(232, 89, 12, 0.28);
+  transform: translateY(-2px);
 }
-.tag-section {
-  scroll-margin-top: 90px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 14px;
-  padding: 1.1rem 1.3rem;
-  background: var(--vp-c-bg-soft);
-  box-shadow: var(--card-shadow);
-  transition: border-color 0.2s;
-}
-.tag-section:hover {
-  border-color: var(--warm-3);
-}
-.tag-section-head {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  border-bottom: 1px dashed var(--vp-c-divider);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.4rem;
-}
-.tag-title {
-  font-size: 1.25rem;
-  margin: 0;
-  color: var(--warm-1);
-}
-.tag-count {
-  color: var(--vp-c-text-2);
-  font-size: 0.82rem;
-  background: var(--vp-c-brand-soft-bg);
-  border-radius: 999px;
-  padding: 0.05rem 0.6rem;
-}
-.tag-post-list {
-  list-style: none;
-  padding: 0;
-  margin: 0.3rem 0 0;
-}
-.tag-post-list li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.8rem;
-  padding: 0.45rem 0;
-  border-bottom: 1px dashed var(--vp-c-divider);
-}
-.tag-post-list li:last-child {
-  border-bottom: none;
-}
-.tag-post-link {
+
+/* 筛选结果标题 */
+.tag-result-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.9rem;
+  padding-left: 0.7rem;
+  border-left: 4px solid var(--warm-2);
   color: var(--vp-c-text-1);
-  text-decoration: none;
-  font-size: 0.98rem;
-  transition: color 0.15s;
 }
-.tag-post-link:hover {
-  color: var(--vp-c-brand-1);
-}
-.tag-date {
-  color: var(--vp-c-text-3);
-  font-size: 0.8rem;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+.tag-result-title .count {
+  color: var(--vp-c-text-2);
+  font-weight: 400;
+  font-size: 0.85rem;
 }
 
 /* ============ 高级日记（统计条 + 月份卡片） ============ */
@@ -340,7 +296,15 @@
   box-shadow: var(--card-shadow-hover);
 }
 .diary-stat-icon {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vp-c-brand-soft-bg);
+  border-radius: 12px;
 }
 .diary-stat-body {
   display: flex;
@@ -370,11 +334,12 @@
   box-shadow: var(--card-shadow);
   margin-bottom: 1.2rem;
   overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .diary-month-card:hover {
   border-color: var(--warm-3);
   box-shadow: var(--card-shadow-hover);
+  transform: translateY(-3px);
 }
 .diary-month-head {
   display: flex;
@@ -387,17 +352,25 @@
 }
 .diary-month-title {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.7rem;
+}
+.diary-month-emoji {
+  font-size: 1.6rem;
+  filter: saturate(1.1);
+}
+.diary-year-line {
+  line-height: 1.1;
 }
 .diary-year {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--vp-c-text-2);
 }
 .diary-month-label {
   font-size: 1.45rem;
   font-weight: 700;
   margin: 0;
+  line-height: 1.2;
   background: var(--warm-grad);
   -webkit-background-clip: text;
   background-clip: text;

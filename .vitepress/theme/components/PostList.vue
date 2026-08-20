@@ -99,8 +99,13 @@ const diaryStats = computed(() => {
     <section v-for="group in grouped" :key="group.ym" class="diary-month-card">
       <div class="diary-month-head">
         <div class="diary-month-title">
-          <span v-if="group.year" class="diary-year">{{ group.year }} 年</span>
-          <h2 class="diary-month-label">{{ group.month }} 月</h2>
+          <span class="diary-month-emoji">📅</span>
+          <div>
+            <div class="diary-year-line">
+              <span v-if="group.year" class="diary-year">{{ group.year }} 年</span>
+            </div>
+            <h2 class="diary-month-label">{{ group.month }} 月</h2>
+          </div>
         </div>
         <span class="diary-month-count">{{ group.posts.length }} 篇</span>
       </div>
