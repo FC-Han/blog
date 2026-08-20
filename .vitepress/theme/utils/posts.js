@@ -45,12 +45,14 @@ export function loadPosts() {
     .map(([path, raw]) => {
       const fm = parseFrontmatter(raw)
       const slug = path.split('/').pop().replace(/\.md$/, '')
+      const content = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
       return {
         title: fm.title || slug,
         date: fm.date || '',
         tags: Array.isArray(fm.tags) ? fm.tags : [],
         description: fm.description || '',
-        url: '/posts/' + slug
+        url: '/posts/' + slug,
+        wordCount: content.replace(/\s/g, '').length
       }
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1))

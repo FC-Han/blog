@@ -39,9 +39,25 @@ const grouped = computed(() => {
     .sort((a, b) => (a < b ? 1 : -1))
     .map((ym) => {
       const [y, m] = ym.split('-')
-      const label = ym === '未标注日期' ? ym : `${y} 年 ${Number(m)} 月`
-      return { ym, label, posts: map[ym] }
+      return {
+        ym,
+        year: ym === '未标注日期' ? '' : y,
+        month: ym === '未标注日期' ? '?' : Number(m),
+        posts: map[ym]
+      }
     })
+})
+
+// 日记统计：总篇数 / 月份数 / 总字数
+const diaryStats = computed(() => {
+  const total = filtered.value.length
+  const months = grouped.value.length
+  const words = filtered.value.reduce((s, p) => s + (p.wordCount || 0), 0)
+  return [
+    { icon: '📔', num: total, label: '篇日记' },
+    { icon: '🗓️', num: months, label: '个月份' },
+    { icon: '✍️', num: words.toLocaleString(), label: '字记录' }
+  ]
 })
 </script>
 
@@ -66,18 +82,36 @@ const grouped = computed(() => {
 
   <!-- 按月归档模式（高级日记页） -->
   <div v-else class="diary-archive">
+    <!-- 统计条 -->
+    <div v-if="diaryStats[0].num" class="diary-stats">
+      <div v-for="s in diaryStats" :key="s.label" class="diary-stat">
+        <span class="diary-stat-icon">{{ s.icon }}</span>
+        <div class="diary-stat-body">
+          <span class="diary-stat-num">{{ s.num }}</span>
+          <span class="diary-stat-label">{{ s.label }}</span>
+        </div>
+      </div>
+    </div>
+
     <p v-if="!grouped.length" class="post-empty">日记还是空白的，去写第一篇吧～</p>
-    <section v-for="group in grouped" :key="group.ym" class="diary-month">
+
+    <!-- 月份卡片 -->
+    <section v-for="group in grouped" :key="group.ym" class="diary-month-card">
       <div class="diary-month-head">
-        <span class="diary-month-dot"></span>
-        <h2 class="diary-month-label">{{ group.label }}</h2>
+        <div class="diary-month-title">
+          <span v-if="group.year" class="diary-year">{{ group.year }} 年</span>
+          <h2 class="diary-month-label">{{ group.month }} 月</h2>
+        </div>
         <span class="diary-month-count">{{ group.posts.length }} 篇</span>
       </div>
       <ul class="diary-month-list">
         <li v-for="post in group.posts" :key="post.url" class="diary-entry">
-          <span class="diary-day">{{ (post.date || '').slice(8, 10) || '--' }}</span>
-          <a :href="post.url" class="diary-title">{{ post.title }}</a>
-          <span v-if="post.description" class="diary-desc">{{ post.description }}</span>
+          <span class="diary-day-badge">{{ (post.date || '').slice(8, 10) || '--' }}</span>
+          <div class="diary-entry-main">
+            <a :href="post.url" class="diary-title">{{ post.title }}</a>
+            <span v-if="post.description" class="diary-desc">{{ post.description }}</span>
+          </div>
+          <span class="diary-arrow">→</span>
         </li>
       </ul>
     </section>
