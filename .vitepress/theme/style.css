@@ -483,6 +483,7 @@
 .about-hero::before {
   content: '';
   position: absolute;
+  z-index: 0;
   top: 0; left: 0; right: 0;
   height: 5px;
   background: linear-gradient(90deg, var(--warm-1), var(--warm-3), var(--warm-1));
@@ -518,14 +519,26 @@
   border-color: var(--vp-c-bg-soft);
 }
 .about-name {
+  position: relative;
+  z-index: 1;
   margin: 1.2rem 0 0.3rem;
   font-size: 2.1rem;
   font-weight: 700;
-  background: var(--warm-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--warm-1);
+}
+/* 支持 background-clip:text 的浏览器显示渐变文字；否则降级为实色，绝不消失 */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .about-name {
+    background: var(--warm-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+/* 覆盖 VitePress 默认 .vp-doc h1 的 margin，避免被压到/错位 */
+.about-page h1.about-name {
+  margin: 1.2rem 0 0.3rem;
 }
 .about-sign {
   color: var(--vp-c-text-1);
@@ -635,11 +648,16 @@
 .stat-value {
   font-size: 1.8rem;
   font-weight: 700;
-  background: var(--warm-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--warm-1);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .stat-value {
+    background: var(--warm-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 .stat-label {
   font-size: 0.85rem;
@@ -666,11 +684,19 @@
   box-shadow: var(--card-shadow-hover);
 }
 .about-card-title {
+  position: relative;
+  z-index: 1;
   font-size: 1.2rem;
   margin: 0 0 0.7rem;
   color: var(--vp-c-text-1);
   padding-left: 0.6rem;
   border-left: 4px solid var(--warm-2);
+}
+/* 覆盖 VitePress 默认 .vp-doc h2 的 border-top/padding-top/margin-top，避免标题被横线或间距挤压 */
+.about-page h2.about-card-title {
+  margin: 0 0 0.7rem;
+  padding-top: 0;
+  border-top: 0;
 }
 .about-card p {
   margin: 0;

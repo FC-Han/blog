@@ -5,6 +5,7 @@ import TagList from './components/TagList.vue'
 import SiteStats from './components/SiteStats.vue'
 import AboutPage from './components/AboutPage.vue'
 import PostMeta from './components/PostMeta.vue'
+import Giscus from './components/Giscus.vue'
 import './style.css'
 
 // 扩展默认主题：
@@ -20,10 +21,12 @@ export default {
     app.component('TagList', TagList)
     app.component('SiteStats', SiteStats)
     app.component('AboutPage', AboutPage)
+    app.component('Giscus', Giscus)
   },
   Layout(props) {
     return h(DefaultTheme.Layout, props, {
-      'doc-before': () => h(PostMeta)
+      'doc-before': () => h(PostMeta),
+      'doc-after': () => h(Giscus)
     })
   }
 }
